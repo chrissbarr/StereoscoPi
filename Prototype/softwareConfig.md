@@ -126,11 +126,22 @@ When we downloaded the scripts to the receiving computer earlier, we downloaded 
 
 On the Pi, check that the file is present. Alternatively, you can repeat the git process we used above, or copy the file across any other way you'd like.
 
-### Running transmitStream.sh
-transmitStream.sh is really just a more convenient way of typing a rather long GStreamer command - namely:
+## Running Software
+### Running transmitStream.sh on each
+First we need to run transmitStream.sh on each Pi. transmitStream.sh is really just a more convenient way of typing a rather long GStreamer command - namely:
 
 `raspivid -t 999999 -w $WIDTH -h $HEIGHT -fps $FRAMERATE -rot 0 -b $BITRATE -n -pf baseline -md 5 -o - | gst-launch-1.0 -e -vvv fdsrc ! h264parse ! rtph264pay pt=96 config-interval=1 ! udpsink host=$TARGET_IP port=$PORT`
 
-You can run the receiveStream.sh script as follows:
+You can run the transmitStream.sh script as follows:
 
-`bash receiveStream.sh 
+`bash transmitStream.sh 192.168.2.4 5000 1280 720 50 3000000`
+
+Where the arguments represent the following:
+* 192.168.2.4 - IP Address of the computer that will run receiveStream.py
+* 5000 - Port that we want to transmit on. This needs to be different for each Pi - 5000 and 5001 are good numbers.
+* 1280 and 720 - width and height, respectively, of video acquired from the attached camera
+* 50 - video framerate
+* 3000000 - bitrate the video is encoded at. Dependent on network conditions, decrease if video is jerky / high-latency, increase for higher quality.
+
+When the script is running, the LED on the camera module should light up, indicating the camera is active.
+
