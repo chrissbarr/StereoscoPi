@@ -1,5 +1,5 @@
 # StereoscoPi
-StereoscoPi is a PCB that connects to a Raspberry Pi Compute Module. It powers the compute module, and provides for connections for two cameras, along with a USB connection for a WiFi adaptor.
+StereoscoPi is a PCB that connects to a Raspberry Pi Compute Module. It powers the compute module, and provides connections for two cameras, along with a USB connection for a WiFi adaptor.
 
 ## Power
 Power input is via a 2.1mm barrel jack. StereoscoPi uses a highly efficient switching regulator, and can accept 5V - 17V.
