@@ -16,8 +16,10 @@ The system can be powered by a microUSB cable - just make sure your power source
 
 ## Mechanical
 A 3D-printable case has been designed to house two Raspberry Pi modules, and to mount two cameras at approximate eye spacing.
+
 ![Case](boxPreview.png "This is the case")
-The files for this case can be found in the CAD folder. with SolidWorks source files and STL files for printing.
+
+The files for this case can be found in the CAD folder, with SolidWorks source files and STL files for printing.
 
 The following files are required regardless of configuration:
 * double-pi-box
