@@ -63,3 +63,20 @@ You should see the files (or similar):
 
 ```receiveStream.py      transmitStream.sh```
 
+### Configuring receiveStream.py
+The receiveStream.py script requires the following information:
+
+* Screen Resolution (i.e. 1920x1080 for the Oculus DK2)
+* Pi 1 Port (i.e. 5000)
+* Pi 2 Port (i.e. 5001)
+
+Edit the receiveStream.py file, and add these details in the 'Required Configuration' section near the top of the file, as shown:
+
+```
+# Required Configuration
+display_width = 1920
+display_height = 1080
+port1 = '5001'
+port2 = '5000'
+```
+
