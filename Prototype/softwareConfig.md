@@ -3,6 +3,7 @@
 This guide assumes you're running a recent version of Ubuntu. The StereoscoPi prototype software is written in Python, and should have good cross-platform compatibility. Likewise GStreamer supports most major operating systems - it should be possible to replicate this setup on Windows or OSX. For the sake of simplicity, we will use Ubuntu here.
 ### GStreamer Installation
 First we need to tell our system where to look for the GStreamer framework:
+
 `sudo add-apt-repository ppa:gstreamer-developers/ppa`
 
 Update:
@@ -127,12 +128,12 @@ When we downloaded the scripts to the receiving computer earlier, we downloaded 
 On the Pi, check that the file is present. Alternatively, you can repeat the git process we used above, or copy the file across any other way you'd like.
 
 ## Running Software
-### Running transmitStream.sh on each
+### Running transmitStream.sh
 First we need to run transmitStream.sh on each Pi. transmitStream.sh is really just a more convenient way of typing a rather long GStreamer command - namely:
 
 `raspivid -t 999999 -w $WIDTH -h $HEIGHT -fps $FRAMERATE -rot 0 -b $BITRATE -n -pf baseline -md 5 -o - | gst-launch-1.0 -e -vvv fdsrc ! h264parse ! rtph264pay pt=96 config-interval=1 ! udpsink host=$TARGET_IP port=$PORT`
 
-You can run the transmitStream.sh script as follows:
+Connect via SSH. You can run the transmitStream.sh script as follows:
 
 `bash transmitStream.sh 192.168.2.4 5000 1280 720 50 3000000`
 
@@ -145,3 +146,32 @@ Where the arguments represent the following:
 
 When the script is running, the LED on the camera module should light up, indicating the camera is active.
 
+### Running receiveStream.py
+On the receiving computer, navigate to the folder containing receiveStream.py, and run the script:
+
+`python receiveStream.py`
+
+After a momentary delay, a full-screen application should appear. Video feeds from both Pi transmitters should appear, side-by-side. If nothing happens, check that:
+
+* Both Pis are transmitting
+* You're using the same port numbers in receiveStream.py and on each Pi to run transmitStream.sh
+* All three computers are connected to the same network
+* That the IP of the receiving computer is correctly set on each Pi in the call to transmitStream.sh
+
+If the video appears, hurray! Check that the camera's aren't inverted (left is right, right is left, etc). If they are the wrong way around, exit receiveStream.py by pressing CTRL+C, and run it again, this time with the argument to swap the cameras around:
+
+`python receiveStream.py -sw 1`
+
+If you can only get one camera transmitting, or want to run monoscopically, you can call receiveStream.py as:
+
+`python receiveStream.py -s 1`
+
+Which will cause the program to only look for the first camera specified, and duplicate it twice, side-by-side. If you want to run only the second camera, swap the cameras:
+
+`python receiveStream.py -sw 1 -s 1`
+
+The default video scale should fill up as much of the screen as it can without distorting or overlapping the video feeds. If you'd like to adjust the scale, you can do so:
+
+`python receiveStream.py -scale 80`
+
+This will run each video feed at 80%. Smaller values will appear equivelant to using a smaller FOV headset.
