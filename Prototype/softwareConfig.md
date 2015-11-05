@@ -80,3 +80,57 @@ port1 = '5001'
 port2 = '5000'
 ```
 
+## Transmitting Computer
+You'll need to repeat this process for each Pi. First you'll need to configure each Pi for SSH access - Adafruit have a great tutorial for doing this [here](https://learn.adafruit.com/adafruits-raspberry-pi-lesson-6-using-ssh). Once you have SSH access set up, continue with the steps below.
+
+### Install GStreamer
+`sudo nano /etc/apt/sources.list`
+
+Add the following line to the end of the file:
+
+`deb http://vontaene.de/raspbian-updates/ . main`
+
+CTRL+X, save the file over the original, and exit. Update:
+
+`sudo apt-get update`
+
+Download GStreamer:
+
+`sudo apt-get install gstreamer1.0`
+
+Just as we did on the receiving computer, test GStreamer is installed:
+
+`gst-inspect-1.0 fakesrc`
+
+If succesful, you should see something similar to the following:
+
+```
+Factory Details:
+Rank                     none (0)
+Long-name                Fake Source
+Klass                    Source
+...
+...
+...
+Element Signals:
+"handoff" :  void user_function (GstElement* object,
+                                 GstBuffer* arg0,
+                                 GstPad* arg1,
+                                 gpointer user_data);
+```
+
+### Copy transmitStream.sh
+When we downloaded the scripts to the receiving computer earlier, we downloaded the script we need to place on the Pi - transmitStream.sh. Assuming you're still in the 'Prototype/Scripts/' folder on the receiving computer, copy the file over SSH as follows:
+
+`scp transmitStream.sh user@remote.host:/scripts`
+
+On the Pi, check that the file is present. Alternatively, you can repeat the git process we used above, or copy the file across any other way you'd like.
+
+### Running transmitStream.sh
+transmitStream.sh is really just a more convenient way of typing a rather long GStreamer command - namely:
+
+`raspivid -t 999999 -w $WIDTH -h $HEIGHT -fps $FRAMERATE -rot 0 -b $BITRATE -n -pf baseline -md 5 -o - | gst-launch-1.0 -e -vvv fdsrc ! h264parse ! rtph264pay pt=96 config-interval=1 ! udpsink host=$TARGET_IP port=$PORT`
+
+You can run the receiveStream.sh script as follows:
+
+`bash receiveStream.sh 
