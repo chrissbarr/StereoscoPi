@@ -15,8 +15,6 @@ Because the Raspberry Pi Compute module does not use removable storage as is the
 Several additional outputs for power and PWM signals are broken out across the board. These are general purpose, but could - for example - be used to drive a small servo-based gimbal.
 
 ## Prototype
-A proof-of-concept prototype has been constructed using two Raspberry Pi 2 B SBCs, and two separate wireless network adaptors.
-
-For information on replicating the hardware of this setup, follow the guide on the Prototype Hardware page. For software setup, see the Prototype Software page.
+A proof-of-concept prototype has been constructed using two Raspberry Pi 2 B SBCs, and two separate wireless network adaptors. For information on replicating the hardware of this setup, follow the guide on the Prototype Hardware page. For software setup, see the Prototype Software page.
 
 
